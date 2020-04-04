@@ -1,0 +1,338 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cocoivan.blog.mapper.DiaryMapper">
+  <resultMap id="BaseResultMap" type="com.cocoivan.blog.domain.Diary">
+    <id column="diary_id" jdbcType="BIGINT" property="diaryId" />
+    <result column="title" jdbcType="VARCHAR" property="title" />
+    <result column="cover_img" jdbcType="VARCHAR" property="coverImg" />
+    <result column="short_brief" jdbcType="VARCHAR" property="shortBrief" />
+    <result column="diary_type" jdbcType="INTEGER" property="diaryType" />
+    <result column="author" jdbcType="VARCHAR" property="author" />
+    <result column="ctime" jdbcType="TIMESTAMP" property="ctime" />
+    <result column="mtime" jdbcType="TIMESTAMP" property="mtime" />
+  </resultMap>
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.cocoivan.blog.domain.Diary">
+    <result column="content" jdbcType="LONGVARCHAR" property="content" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    diary_id, title, cover_img, short_brief, diary_type, author, ctime, mtime
+  </sql>
+  <sql id="Blob_Column_List">
+    content
+  </sql>
+  <select id="selectByExampleWithBLOBs" parameterType="com.cocoivan.blog.domain.DiaryExample" resultMap="ResultMapWithBLOBs">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from diary
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByExample" parameterType="com.cocoivan.blog.domain.DiaryExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from diary
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="ResultMapWithBLOBs">
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from diary
+    where diary_id = #{diaryId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from diary
+    where diary_id = #{diaryId,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.cocoivan.blog.domain.DiaryExample">
+    delete from diary
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.cocoivan.blog.domain.Diary">
+    insert into diary (diary_id, title, cover_img, 
+      short_brief, diary_type, author, 
+      ctime, mtime, content
+      )
+    values (#{diaryId,jdbcType=BIGINT}, #{title,jdbcType=VARCHAR}, #{coverImg,jdbcType=VARCHAR}, 
+      #{shortBrief,jdbcType=VARCHAR}, #{diaryType,jdbcType=INTEGER}, #{author,jdbcType=VARCHAR}, 
+      #{ctime,jdbcType=TIMESTAMP}, #{mtime,jdbcType=TIMESTAMP}, #{content,jdbcType=LONGVARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.cocoivan.blog.domain.Diary" keyProperty="diaryId" useGeneratedKeys="true">
+    insert into diary
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="diaryId != null">
+        diary_id,
+      </if>
+      <if test="title != null">
+        title,
+      </if>
+      <if test="coverImg != null">
+        cover_img,
+      </if>
+      <if test="shortBrief != null">
+        short_brief,
+      </if>
+      <if test="diaryType != null">
+        diary_type,
+      </if>
+      <if test="author != null">
+        author,
+      </if>
+      <if test="ctime != null">
+        ctime,
+      </if>
+      <if test="mtime != null">
+        mtime,
+      </if>
+      <if test="content != null">
+        content,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="diaryId != null">
+        #{diaryId,jdbcType=BIGINT},
+      </if>
+      <if test="title != null">
+        #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="coverImg != null">
+        #{coverImg,jdbcType=VARCHAR},
+      </if>
+      <if test="shortBrief != null">
+        #{shortBrief,jdbcType=VARCHAR},
+      </if>
+      <if test="diaryType != null">
+        #{diaryType,jdbcType=INTEGER},
+      </if>
+      <if test="author != null">
+        #{author,jdbcType=VARCHAR},
+      </if>
+      <if test="ctime != null">
+        #{ctime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="mtime != null">
+        #{mtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="content != null">
+        #{content,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.cocoivan.blog.domain.DiaryExample" resultType="java.lang.Long">
+    select count(*) from diary
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update diary
+    <set>
+      <if test="record.diaryId != null">
+        diary_id = #{record.diaryId,jdbcType=BIGINT},
+      </if>
+      <if test="record.title != null">
+        title = #{record.title,jdbcType=VARCHAR},
+      </if>
+      <if test="record.coverImg != null">
+        cover_img = #{record.coverImg,jdbcType=VARCHAR},
+      </if>
+      <if test="record.shortBrief != null">
+        short_brief = #{record.shortBrief,jdbcType=VARCHAR},
+      </if>
+      <if test="record.diaryType != null">
+        diary_type = #{record.diaryType,jdbcType=INTEGER},
+      </if>
+      <if test="record.author != null">
+        author = #{record.author,jdbcType=VARCHAR},
+      </if>
+      <if test="record.ctime != null">
+        ctime = #{record.ctime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.mtime != null">
+        mtime = #{record.mtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.content != null">
+        content = #{record.content,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExampleWithBLOBs" parameterType="map">
+    update diary
+    set diary_id = #{record.diaryId,jdbcType=BIGINT},
+      title = #{record.title,jdbcType=VARCHAR},
+      cover_img = #{record.coverImg,jdbcType=VARCHAR},
+      short_brief = #{record.shortBrief,jdbcType=VARCHAR},
+      diary_type = #{record.diaryType,jdbcType=INTEGER},
+      author = #{record.author,jdbcType=VARCHAR},
+      ctime = #{record.ctime,jdbcType=TIMESTAMP},
+      mtime = #{record.mtime,jdbcType=TIMESTAMP},
+      content = #{record.content,jdbcType=LONGVARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update diary
+    set diary_id = #{record.diaryId,jdbcType=BIGINT},
+      title = #{record.title,jdbcType=VARCHAR},
+      cover_img = #{record.coverImg,jdbcType=VARCHAR},
+      short_brief = #{record.shortBrief,jdbcType=VARCHAR},
+      diary_type = #{record.diaryType,jdbcType=INTEGER},
+      author = #{record.author,jdbcType=VARCHAR},
+      ctime = #{record.ctime,jdbcType=TIMESTAMP},
+      mtime = #{record.mtime,jdbcType=TIMESTAMP}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.cocoivan.blog.domain.Diary">
+    update diary
+    <set>
+      <if test="title != null">
+        title = #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="coverImg != null">
+        cover_img = #{coverImg,jdbcType=VARCHAR},
+      </if>
+      <if test="shortBrief != null">
+        short_brief = #{shortBrief,jdbcType=VARCHAR},
+      </if>
+      <if test="diaryType != null">
+        diary_type = #{diaryType,jdbcType=INTEGER},
+      </if>
+      <if test="author != null">
+        author = #{author,jdbcType=VARCHAR},
+      </if>
+      <if test="ctime != null">
+        ctime = #{ctime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="mtime != null">
+        mtime = #{mtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="content != null">
+        content = #{content,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where diary_id = #{diaryId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.cocoivan.blog.domain.Diary">
+    update diary
+    set title = #{title,jdbcType=VARCHAR},
+      cover_img = #{coverImg,jdbcType=VARCHAR},
+      short_brief = #{shortBrief,jdbcType=VARCHAR},
+      diary_type = #{diaryType,jdbcType=INTEGER},
+      author = #{author,jdbcType=VARCHAR},
+      ctime = #{ctime,jdbcType=TIMESTAMP},
+      mtime = #{mtime,jdbcType=TIMESTAMP},
+      content = #{content,jdbcType=LONGVARCHAR}
+    where diary_id = #{diaryId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.cocoivan.blog.domain.Diary">
+    update diary
+    set title = #{title,jdbcType=VARCHAR},
+      cover_img = #{coverImg,jdbcType=VARCHAR},
+      short_brief = #{shortBrief,jdbcType=VARCHAR},
+      diary_type = #{diaryType,jdbcType=INTEGER},
+      author = #{author,jdbcType=VARCHAR},
+      ctime = #{ctime,jdbcType=TIMESTAMP},
+      mtime = #{mtime,jdbcType=TIMESTAMP}
+    where diary_id = #{diaryId,jdbcType=BIGINT}
+  </update>
+  <insert id="batchInsert">
+    <if test="items.get(0) != null">
+            insert into diary  (diary_id, title, cover_img, 
+        short_brief, diary_type, author, 
+        ctime, mtime, content
+        )
+      values
+      <foreach collection="items" item="item" index="index" separator=",">
+      (#{item.diaryId,jdbcType=BIGINT}, #{item.title,jdbcType=VARCHAR}, #{item.coverImg,jdbcType=VARCHAR}, 
+        #{item.shortBrief,jdbcType=VARCHAR}, #{item.diaryType,jdbcType=INTEGER}, #{item.author,jdbcType=VARCHAR}, 
+        #{item.ctime,jdbcType=TIMESTAMP}, #{item.mtime,jdbcType=TIMESTAMP}, #{item.content,jdbcType=LONGVARCHAR}
+        )
+      </foreach>
+    </if>
+  </insert>
+</mapper>

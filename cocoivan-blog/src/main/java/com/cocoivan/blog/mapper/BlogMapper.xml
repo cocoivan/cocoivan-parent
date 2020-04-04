@@ -1,0 +1,338 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cocoivan.blog.mapper.BlogMapper">
+  <resultMap id="BaseResultMap" type="com.cocoivan.blog.domain.Blog">
+    <id column="blog_id" jdbcType="BIGINT" property="blogId" />
+    <result column="title" jdbcType="VARCHAR" property="title" />
+    <result column="cover_img" jdbcType="VARCHAR" property="coverImg" />
+    <result column="short_brief" jdbcType="VARCHAR" property="shortBrief" />
+    <result column="blog_type" jdbcType="INTEGER" property="blogType" />
+    <result column="author" jdbcType="VARCHAR" property="author" />
+    <result column="ctime" jdbcType="TIMESTAMP" property="ctime" />
+    <result column="mtime" jdbcType="TIMESTAMP" property="mtime" />
+  </resultMap>
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.cocoivan.blog.domain.Blog">
+    <result column="content" jdbcType="LONGVARCHAR" property="content" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    blog_id, title, cover_img, short_brief, blog_type, author, ctime, mtime
+  </sql>
+  <sql id="Blob_Column_List">
+    content
+  </sql>
+  <select id="selectByExampleWithBLOBs" parameterType="com.cocoivan.blog.domain.BlogExample" resultMap="ResultMapWithBLOBs">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from blog
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByExample" parameterType="com.cocoivan.blog.domain.BlogExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from blog
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="ResultMapWithBLOBs">
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from blog
+    where blog_id = #{blogId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from blog
+    where blog_id = #{blogId,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.cocoivan.blog.domain.BlogExample">
+    delete from blog
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.cocoivan.blog.domain.Blog">
+    insert into blog (blog_id, title, cover_img, 
+      short_brief, blog_type, author, 
+      ctime, mtime, content
+      )
+    values (#{blogId,jdbcType=BIGINT}, #{title,jdbcType=VARCHAR}, #{coverImg,jdbcType=VARCHAR}, 
+      #{shortBrief,jdbcType=VARCHAR}, #{blogType,jdbcType=INTEGER}, #{author,jdbcType=VARCHAR}, 
+      #{ctime,jdbcType=TIMESTAMP}, #{mtime,jdbcType=TIMESTAMP}, #{content,jdbcType=LONGVARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.cocoivan.blog.domain.Blog" useGeneratedKeys="true" keyProperty="blogId">
+    insert into blog
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="blogId != null">
+        blog_id,
+      </if>
+      <if test="title != null">
+        title,
+      </if>
+      <if test="coverImg != null">
+        cover_img,
+      </if>
+      <if test="shortBrief != null">
+        short_brief,
+      </if>
+      <if test="blogType != null">
+        blog_type,
+      </if>
+      <if test="author != null">
+        author,
+      </if>
+      <if test="ctime != null">
+        ctime,
+      </if>
+      <if test="mtime != null">
+        mtime,
+      </if>
+      <if test="content != null">
+        content,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="blogId != null">
+        #{blogId,jdbcType=BIGINT},
+      </if>
+      <if test="title != null">
+        #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="coverImg != null">
+        #{coverImg,jdbcType=VARCHAR},
+      </if>
+      <if test="shortBrief != null">
+        #{shortBrief,jdbcType=VARCHAR},
+      </if>
+      <if test="blogType != null">
+        #{blogType,jdbcType=INTEGER},
+      </if>
+      <if test="author != null">
+        #{author,jdbcType=VARCHAR},
+      </if>
+      <if test="ctime != null">
+        #{ctime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="mtime != null">
+        #{mtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="content != null">
+        #{content,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.cocoivan.blog.domain.BlogExample" resultType="java.lang.Long">
+    select count(*) from blog
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update blog
+    <set>
+      <if test="record.blogId != null">
+        blog_id = #{record.blogId,jdbcType=BIGINT},
+      </if>
+      <if test="record.title != null">
+        title = #{record.title,jdbcType=VARCHAR},
+      </if>
+      <if test="record.coverImg != null">
+        cover_img = #{record.coverImg,jdbcType=VARCHAR},
+      </if>
+      <if test="record.shortBrief != null">
+        short_brief = #{record.shortBrief,jdbcType=VARCHAR},
+      </if>
+      <if test="record.blogType != null">
+        blog_type = #{record.blogType,jdbcType=INTEGER},
+      </if>
+      <if test="record.author != null">
+        author = #{record.author,jdbcType=VARCHAR},
+      </if>
+      <if test="record.ctime != null">
+        ctime = #{record.ctime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.mtime != null">
+        mtime = #{record.mtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.content != null">
+        content = #{record.content,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExampleWithBLOBs" parameterType="map">
+    update blog
+    set blog_id = #{record.blogId,jdbcType=BIGINT},
+      title = #{record.title,jdbcType=VARCHAR},
+      cover_img = #{record.coverImg,jdbcType=VARCHAR},
+      short_brief = #{record.shortBrief,jdbcType=VARCHAR},
+      blog_type = #{record.blogType,jdbcType=INTEGER},
+      author = #{record.author,jdbcType=VARCHAR},
+      ctime = #{record.ctime,jdbcType=TIMESTAMP},
+      mtime = #{record.mtime,jdbcType=TIMESTAMP},
+      content = #{record.content,jdbcType=LONGVARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update blog
+    set blog_id = #{record.blogId,jdbcType=BIGINT},
+      title = #{record.title,jdbcType=VARCHAR},
+      cover_img = #{record.coverImg,jdbcType=VARCHAR},
+      short_brief = #{record.shortBrief,jdbcType=VARCHAR},
+      blog_type = #{record.blogType,jdbcType=INTEGER},
+      author = #{record.author,jdbcType=VARCHAR},
+      ctime = #{record.ctime,jdbcType=TIMESTAMP},
+      mtime = #{record.mtime,jdbcType=TIMESTAMP}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.cocoivan.blog.domain.Blog">
+    update blog
+    <set>
+      <if test="title != null">
+        title = #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="coverImg != null">
+        cover_img = #{coverImg,jdbcType=VARCHAR},
+      </if>
+      <if test="shortBrief != null">
+        short_brief = #{shortBrief,jdbcType=VARCHAR},
+      </if>
+      <if test="blogType != null">
+        blog_type = #{blogType,jdbcType=INTEGER},
+      </if>
+      <if test="author != null">
+        author = #{author,jdbcType=VARCHAR},
+      </if>
+      <if test="ctime != null">
+        ctime = #{ctime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="mtime != null">
+        mtime = #{mtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="content != null">
+        content = #{content,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where blog_id = #{blogId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.cocoivan.blog.domain.Blog">
+    update blog
+    set title = #{title,jdbcType=VARCHAR},
+      cover_img = #{coverImg,jdbcType=VARCHAR},
+      short_brief = #{shortBrief,jdbcType=VARCHAR},
+      blog_type = #{blogType,jdbcType=INTEGER},
+      author = #{author,jdbcType=VARCHAR},
+      ctime = #{ctime,jdbcType=TIMESTAMP},
+      mtime = #{mtime,jdbcType=TIMESTAMP},
+      content = #{content,jdbcType=LONGVARCHAR}
+    where blog_id = #{blogId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.cocoivan.blog.domain.Blog">
+    update blog
+    set title = #{title,jdbcType=VARCHAR},
+      cover_img = #{coverImg,jdbcType=VARCHAR},
+      short_brief = #{shortBrief,jdbcType=VARCHAR},
+      blog_type = #{blogType,jdbcType=INTEGER},
+      author = #{author,jdbcType=VARCHAR},
+      ctime = #{ctime,jdbcType=TIMESTAMP},
+      mtime = #{mtime,jdbcType=TIMESTAMP}
+    where blog_id = #{blogId,jdbcType=BIGINT}
+  </update>
+  <insert id="batchInsert">
+    <if test="items.get(0) != null">
+            insert into blog  (blog_id, title, cover_img, 
+        short_brief, blog_type, author, 
+        ctime, mtime, content
+        )
+      values
+      <foreach collection="items" item="item" index="index" separator=",">
+      (#{item.blogId,jdbcType=BIGINT}, #{item.title,jdbcType=VARCHAR}, #{item.coverImg,jdbcType=VARCHAR}, 
+        #{item.shortBrief,jdbcType=VARCHAR}, #{item.blogType,jdbcType=INTEGER}, #{item.author,jdbcType=VARCHAR}, 
+        #{item.ctime,jdbcType=TIMESTAMP}, #{item.mtime,jdbcType=TIMESTAMP}, #{item.content,jdbcType=LONGVARCHAR}
+        )
+      </foreach>
+    </if>
+  </insert>
+</mapper>
