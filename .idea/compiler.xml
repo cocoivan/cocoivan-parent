@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="cocoivan-blog" />
+        <module name="cocoivan-sys" />
+        <module name="cocoivan-account" />
+        <module name="cocoivan-api" />
+      </profile>
+    </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="cocoivan-account" target="1.8" />
+      <module name="cocoivan-api" target="1.5" />
+      <module name="cocoivan-blog" target="1.8" />
+      <module name="cocoivan-parent" target="1.5" />
+      <module name="cocoivan-sys" target="1.8" />
+    </bytecodeTargetLevel>
+  </component>
+  <component name="JavacSettings">
+    <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="cocoivan-account" options="-parameters" />
+      <module name="cocoivan-api" options="" />
+      <module name="cocoivan-blog" options="-parameters" />
+      <module name="cocoivan-parent" options="" />
+      <module name="cocoivan-sys" options="-parameters" />
+    </option>
+  </component>
+</project>
