@@ -23,6 +23,12 @@
             <groupId>com.cocoivan</groupId>
             <artifactId>cocoivan-api</artifactId>
             <version>${version}</version>
+            <exclusions>
+                <exclusion>
+                    <artifactId>spring-boot-starter</artifactId>
+                    <groupId>org.springframework.boot</groupId>
+                </exclusion>
+            </exclusions>
         </dependency>
 
         <dependency>
