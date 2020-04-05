@@ -1,5 +1,9 @@
 package com.cocoivan.sys.model;
 
+import com.cocoivan.account.model.UserVO;
+import com.cocoivan.blog.model.BlogBriefVO;
+import com.cocoivan.blog.model.DiaryBriefVO;
+
 import java.util.List;
 
 public class IndexVO {

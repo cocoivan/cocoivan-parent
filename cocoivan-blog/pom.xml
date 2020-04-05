@@ -7,10 +7,8 @@
         <groupId>com.cocoivan</groupId>
         <artifactId>cocoivan-parent</artifactId>
         <version>0.0.1-SNAPSHOT</version>
-        <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <artifactId>cocoivan-blog</artifactId>
-    <version>${version}</version>
     <name>cocoivan-blog</name>
     <description>Demo project for Spring Boot</description>
 
@@ -22,7 +20,7 @@
         <dependency>
             <groupId>com.cocoivan</groupId>
             <artifactId>cocoivan-api</artifactId>
-            <version>${version}</version>
+            <version>${coocivan.version}</version>
             <exclusions>
                 <exclusion>
                     <artifactId>spring-boot-starter</artifactId>
